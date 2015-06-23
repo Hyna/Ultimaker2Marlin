@@ -178,9 +178,9 @@ static char* lcd_sd_menu_filename_callback(uint8_t nr)
     {
         if (card.atRoot())
         {
-            strcpy_P(card.longFilename, PSTR("< RETURN"));
+            strcpy_P(card.longFilename, PSTR("< ZPET"));
         }else{
-            strcpy_P(card.longFilename, PSTR("< BACK"));
+            strcpy_P(card.longFilename, PSTR("< NAVRAT"));
         }
     }else{
         card.longFilename[0] = '\0';
@@ -227,7 +227,7 @@ void lcd_sd_menu_details_callback(uint8_t nr)
         {
             if (LCD_CACHE_TYPE(idx) == 1)
             {
-                lcd_lib_draw_string_centerP(53, PSTR("Folder"));
+                lcd_lib_draw_string_centerP(53, PSTR("Slozka"));
             }else{
                 char buffer[64];
                 if (LCD_DETAIL_CACHE_ID() != nr)
@@ -273,7 +273,7 @@ void lcd_sd_menu_details_callback(uint8_t nr)
                     char* c = buffer;
                     if (led_glow_dir)
                     {
-                        strcpy_P(c, PSTR("Time: ")); c += 6;
+                        strcpy_P(c, PSTR("Cas: ")); c += 6;
                         c = int_to_time_string(LCD_DETAIL_CACHE_TIME(), c);
                     }else{
                         strcpy_P(c, PSTR("Material: ")); c += 10;
@@ -296,7 +296,7 @@ void lcd_sd_menu_details_callback(uint8_t nr)
                     }
                     lcd_lib_draw_string(3, 53, buffer);
                 }else{
-                    lcd_lib_draw_stringP(3, 53, PSTR("No info available"));
+                    lcd_lib_draw_stringP(3, 53, PSTR("Zadne informace"));
                 }
             }
         }
@@ -310,8 +310,8 @@ void lcd_menu_print_select()
         LED_GLOW();
         lcd_lib_encoder_pos = MAIN_MENU_ITEM_POS(0);
         lcd_info_screen(lcd_menu_main);
-        lcd_lib_draw_string_centerP(15, PSTR("No SD-CARD!"));
-        lcd_lib_draw_string_centerP(25, PSTR("Please insert card"));
+        lcd_lib_draw_string_centerP(15, PSTR("Neni SD-KARTA!"));
+        lcd_lib_draw_string_centerP(25, PSTR("Prosim vlozte kartu"));
         lcd_lib_update_screen();
         card.release();
         return;
@@ -319,7 +319,7 @@ void lcd_menu_print_select()
     if (!card.isOk())
     {
         lcd_info_screen(lcd_menu_main);
-        lcd_lib_draw_string_centerP(16, PSTR("Reading card..."));
+        lcd_lib_draw_string_centerP(16, PSTR("Nacitam kartu..."));
         lcd_lib_update_screen();
         lcd_clear_cache();
         card.initsd();
@@ -340,7 +340,7 @@ void lcd_menu_print_select()
             lcd_info_screen(lcd_menu_main, NULL, PSTR("OK"));
         else
             lcd_info_screen(lcd_menu_print_select, cardUpdir, PSTR("OK"));
-        lcd_lib_draw_string_centerP(25, PSTR("No files found!"));
+        lcd_lib_draw_string_centerP(25, PSTR("Nenalezeny zadne soubory!"));
         lcd_lib_update_screen();
         lcd_clear_cache();
         return;
@@ -439,12 +439,12 @@ void lcd_menu_print_select()
             return;//Return so we do not continue after changing the directory or selecting a file. The nrOfFiles is invalid at this point.
         }
     }
-    lcd_scroll_menu(PSTR("SD CARD"), nrOfFiles+1, lcd_sd_menu_filename_callback, lcd_sd_menu_details_callback);
+    lcd_scroll_menu(PSTR("SD KARTA"), nrOfFiles+1, lcd_sd_menu_filename_callback, lcd_sd_menu_details_callback);
 }
 
 static void lcd_menu_print_heatup()
 {
-    lcd_question_screen(lcd_menu_print_tune, NULL, PSTR("TUNE"), lcd_menu_print_abort, NULL, PSTR("ABORT"));
+    lcd_question_screen(lcd_menu_print_tune, NULL, PSTR("NALADIT"), lcd_menu_print_abort, NULL, PSTR("PRERUSIT"));
 
 #if TEMP_SENSOR_BED != 0
     if (current_temperature_bed > target_temperature_bed - 10)
@@ -496,8 +496,8 @@ static void lcd_menu_print_heatup()
     else
         minProgress = progress;
 
-    lcd_lib_draw_string_centerP(10, PSTR("Heating up..."));
-    lcd_lib_draw_string_centerP(20, PSTR("Preparing to print:"));
+    lcd_lib_draw_string_centerP(10, PSTR("Zahrivam..."));
+    lcd_lib_draw_string_centerP(20, PSTR("Pripravuji k tisku:"));
     lcd_lib_draw_string_center(30, LCD_CACHE_FILENAME(0));
 
     lcd_progressbar(progress);
@@ -516,7 +516,7 @@ static void lcd_menu_print_printing()
 {
     if (card.pause)
     {
-        lcd_tripple_menu(PSTR("RESUME|PRINT"), PSTR("CHANGE|MATERIAL"), PSTR("TUNE"));
+        lcd_tripple_menu(PSTR("POKRACUJ|V TISKU"), PSTR("VYMENA|MATERIALU"), PSTR("NALADIT"));
         if (lcd_lib_button_pressed)
         {
             if (IS_SELECTED_MAIN(0) && movesplanned() < 1)
@@ -531,25 +531,25 @@ static void lcd_menu_print_printing()
     }
     else
     {
-        lcd_question_screen(lcd_menu_print_tune, NULL, PSTR("TUNE"), lcd_menu_print_printing, lcd_menu_print_pause, PSTR("PAUSE"));
+        lcd_question_screen(lcd_menu_print_tune, NULL, PSTR("NALADIT"), lcd_menu_print_printing, lcd_menu_print_pause, PSTR("PAUZA"));
         uint8_t progress = card.getFilePos() / ((card.getFileSize() + 123) / 124);
         char buffer[16];
         char* c;
         switch(printing_state)
         {
         default:
-            lcd_lib_draw_string_centerP(20, PSTR("Printing:"));
+            lcd_lib_draw_string_centerP(20, PSTR("Tisknu:"));
             lcd_lib_draw_string_center(30, LCD_CACHE_FILENAME(0));
             break;
         case PRINT_STATE_HEATING:
-            lcd_lib_draw_string_centerP(20, PSTR("Heating"));
+            lcd_lib_draw_string_centerP(20, PSTR("Zahrivam"));
             c = int_to_string(dsp_temperature[0], buffer, PSTR("C"));
             *c++ = '/';
             c = int_to_string(target_temperature[0], c, PSTR("C"));
             lcd_lib_draw_string_center(30, buffer);
             break;
         case PRINT_STATE_HEATING_BED:
-            lcd_lib_draw_string_centerP(20, PSTR("Heating buildplate"));
+            lcd_lib_draw_string_centerP(20, PSTR("Zahrivam podlozku"));
             c = int_to_string(dsp_temperature_bed, buffer, PSTR("C"));
             *c++ = '/';
             c = int_to_string(target_temperature_bed, c, PSTR("C"));
@@ -567,7 +567,7 @@ static void lcd_menu_print_printing()
         if (LCD_DETAIL_CACHE_TIME() == 0 && printTimeSec < 60)
         {
             totalTimeSmoothSec = totalTimeMs / 1000;
-            lcd_lib_draw_stringP(5, 10, PSTR("Time left unknown"));
+            lcd_lib_draw_stringP(5, 10, PSTR("Zbyva ???"));
         }else{
             unsigned long totalTimeSec;
             if (printTimeSec < LCD_DETAIL_CACHE_TIME() / 2)
@@ -585,7 +585,7 @@ static void lcd_menu_print_printing()
             else
                 timeLeftSec = totalTimeSec - printTimeSec;
             int_to_time_string(timeLeftSec, buffer);
-            lcd_lib_draw_stringP(5, 10, PSTR("Time left"));
+            lcd_lib_draw_stringP(5, 10, PSTR("Zbyva"));
             lcd_lib_draw_string(65, 10, buffer);
         }
 
@@ -598,13 +598,13 @@ static void lcd_menu_print_printing()
 static void lcd_menu_print_error()
 {
     LED_GLOW_ERROR();
-    lcd_info_screen(lcd_menu_main, NULL, PSTR("RETURN TO MAIN"));
+    lcd_info_screen(lcd_menu_main, NULL, PSTR("ZPET DO MENU"));
 
-    lcd_lib_draw_string_centerP(10, PSTR("Error while"));
-    lcd_lib_draw_string_centerP(20, PSTR("reading"));
-    lcd_lib_draw_string_centerP(30, PSTR("SD-card!"));
+    lcd_lib_draw_string_centerP(10, PSTR("Chyba pri"));
+    lcd_lib_draw_string_centerP(20, PSTR("cteni"));
+    lcd_lib_draw_string_centerP(30, PSTR("SD-karty!"));
     char buffer[12];
-    strcpy_P(buffer, PSTR("Code:"));
+    strcpy_P(buffer, PSTR("Kod:"));
     int_to_string(card.errorCode(), buffer+5);
     lcd_lib_draw_string_center(40, buffer);
 
@@ -613,7 +613,7 @@ static void lcd_menu_print_error()
 
 static void lcd_menu_print_classic_warning()
 {
-    lcd_question_screen(lcd_menu_print_printing, doStartPrint, PSTR("CONTINUE"), lcd_menu_print_select, NULL, PSTR("CANCEL"));
+    lcd_question_screen(lcd_menu_print_printing, doStartPrint, PSTR("POKRACOVAT"), lcd_menu_print_select, NULL, PSTR("ZRUSIT"));
 
     lcd_lib_draw_string_centerP(10, PSTR("This file will"));
     lcd_lib_draw_string_centerP(20, PSTR("override machine"));
@@ -626,9 +626,9 @@ static void lcd_menu_print_classic_warning()
 static void lcd_menu_print_abort()
 {
     LED_GLOW();
-    lcd_question_screen(lcd_menu_print_ready, abortPrint, PSTR("YES"), previousMenu, NULL, PSTR("NO"));
+    lcd_question_screen(lcd_menu_print_ready, abortPrint, PSTR("ANO"), previousMenu, NULL, PSTR("NE"));
 
-    lcd_lib_draw_string_centerP(20, PSTR("Abort the print?"));
+    lcd_lib_draw_string_centerP(20, PSTR("Zrusit tisk?"));
 
     lcd_lib_update_screen();
 }
@@ -645,7 +645,7 @@ static void lcd_menu_print_ready()
         analogWrite(LED_PIN, 0);
     else if (led_mode == LED_MODE_BLINK_ON_DONE)
         analogWrite(LED_PIN, (led_glow << 1) * int(led_brightness_level) / 100);
-    lcd_info_screen(lcd_menu_main, postPrintReady, PSTR("BACK TO MENU"));
+    lcd_info_screen(lcd_menu_main, postPrintReady, PSTR("ZPET DO MENU"));
     //unsigned long printTimeSec = (stoptime-starttime)/1000;
     if (current_temperature[0] > 60 || current_temperature_bed > 40)
     {

@@ -25,7 +25,7 @@ static void lcd_menu_advanced_factory_reset();
 
 void lcd_menu_maintenance()
 {
-    lcd_tripple_menu(PSTR("BUILD-|PLATE"), PSTR("ADVANCED"), PSTR("RETURN"));
+    lcd_tripple_menu(PSTR("TISKOVA|PODLOZKA"), PSTR("POKROCILE|NASTAVENI"), PSTR("ZPET"));
 
     if (lcd_lib_button_pressed)
     {
@@ -43,49 +43,49 @@ void lcd_menu_maintenance()
 static char* lcd_advanced_item(uint8_t nr)
 {
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr == 1)
-        strcpy_P(card.longFilename, PSTR("LED settings"));
+        strcpy_P(card.longFilename, PSTR("Nastaveni LED"));
     else if (nr == 2)
 #if EXTRUDERS < 2
-        strcpy_P(card.longFilename, PSTR("Heatup nozzle"));
+        strcpy_P(card.longFilename, PSTR("Zahrat trysku"));
 #else
-        strcpy_P(card.longFilename, PSTR("Heatup first nozzle"));
+        strcpy_P(card.longFilename, PSTR("Zahrat prvni trysku"));
     else if (nr == 3)
-        strcpy_P(card.longFilename, PSTR("Heatup second nozzle"));
+        strcpy_P(card.longFilename, PSTR("Zahrat druhou trysku"));
 #endif
 #if TEMP_SENSOR_BED != 0
     else if (nr == 2 + EXTRUDERS)
         strcpy_P(card.longFilename, PSTR("Heatup buildplate"));
 #endif
     else if (nr == 2 + BED_MENU_OFFSET + EXTRUDERS)
-        strcpy_P(card.longFilename, PSTR("Home head"));
+        strcpy_P(card.longFilename, PSTR("Zaparkovat hlavu"));
     else if (nr == 3 + BED_MENU_OFFSET + EXTRUDERS)
-        strcpy_P(card.longFilename, PSTR("Lower buildplate"));
+        strcpy_P(card.longFilename, PSTR("Snizit tisk. podlozku"));
     else if (nr == 4 + BED_MENU_OFFSET + EXTRUDERS)
-        strcpy_P(card.longFilename, PSTR("Raise buildplate"));
+        strcpy_P(card.longFilename, PSTR("Zvysit tisk. podlozku"));
     else if (nr == 5 + BED_MENU_OFFSET + EXTRUDERS)
-        strcpy_P(card.longFilename, PSTR("Insert material"));
+        strcpy_P(card.longFilename, PSTR("Zavedeni materialu"));
     else if (nr == 6 + BED_MENU_OFFSET + EXTRUDERS)
 #if EXTRUDERS < 2
-        strcpy_P(card.longFilename, PSTR("Move material"));
+        strcpy_P(card.longFilename, PSTR("Pohyb s materialem"));
 #else
         strcpy_P(card.longFilename, PSTR("Move material (1)"));
     else if (nr == 7 + BED_MENU_OFFSET + EXTRUDERS)
         strcpy_P(card.longFilename, PSTR("Move material (2)"));
 #endif
     else if (nr == 6 + BED_MENU_OFFSET + EXTRUDERS * 2)
-        strcpy_P(card.longFilename, PSTR("Set fan speed"));
+        strcpy_P(card.longFilename, PSTR("Rychlost vetraku"));
     else if (nr == 7 + BED_MENU_OFFSET + EXTRUDERS * 2)
-        strcpy_P(card.longFilename, PSTR("Retraction settings"));
+        strcpy_P(card.longFilename, PSTR("Nastaveni retrakce"));
     else if (nr == 8 + BED_MENU_OFFSET + EXTRUDERS * 2)
-        strcpy_P(card.longFilename, PSTR("Motion settings"));
+        strcpy_P(card.longFilename, PSTR("Nastaveni motoru"));
     else if (nr == 9 + BED_MENU_OFFSET + EXTRUDERS * 2)
-        strcpy_P(card.longFilename, PSTR("Version"));
+        strcpy_P(card.longFilename, PSTR("Verze firmware"));
     else if (nr == 10 + BED_MENU_OFFSET + EXTRUDERS * 2)
-        strcpy_P(card.longFilename, PSTR("Runtime stats"));
+        strcpy_P(card.longFilename, PSTR("Statistiky tiskarny"));
     else if (nr == 11 + BED_MENU_OFFSET + EXTRUDERS * 2)
-        strcpy_P(card.longFilename, PSTR("Factory reset"));
+        strcpy_P(card.longFilename, PSTR("Tovarni nastaveni"));
     else
         strcpy_P(card.longFilename, PSTR("???"));
     return card.longFilename;
@@ -136,7 +136,7 @@ static void lcd_menu_maintenance_advanced_return()
 
 static void lcd_menu_maintenance_advanced()
 {
-    lcd_scroll_menu(PSTR("ADVANCED"), 12 + BED_MENU_OFFSET + EXTRUDERS * 2, lcd_advanced_item, lcd_advanced_details);
+    lcd_scroll_menu(PSTR("POKROCILE NASTAVENI"), 12 + BED_MENU_OFFSET + EXTRUDERS * 2, lcd_advanced_item, lcd_advanced_details);
     if (lcd_lib_button_pressed)
     {
         if (IS_SELECTED_SCROLL(0))
@@ -201,7 +201,7 @@ static void lcd_menu_maintenance_advanced()
         }
 #endif
         else if (IS_SELECTED_SCROLL(6 + BED_MENU_OFFSET + EXTRUDERS * 2))
-            LCD_EDIT_SETTING_BYTE_PERCENT(fanSpeed, "Fan speed", "%", 0, 100);
+            LCD_EDIT_SETTING_BYTE_PERCENT(fanSpeed, "Rychlost vetraku", "%", 0, 100);
         else if (IS_SELECTED_SCROLL(7 + BED_MENU_OFFSET + EXTRUDERS * 2))
             lcd_change_to_menu(lcd_menu_maintenance_retraction, SCROLL_MENU_ITEM_POS(0));
         else if (IS_SELECTED_SCROLL(8 + BED_MENU_OFFSET + EXTRUDERS * 2))
@@ -230,8 +230,8 @@ static void lcd_menu_maintenance_advanced_heatup()
         lcd_change_to_menu(previousMenu, previousEncoderPos);
 
     lcd_lib_clear();
-    lcd_lib_draw_string_centerP(20, PSTR("Nozzle temperature:"));
-    lcd_lib_draw_string_centerP(53, PSTR("Click to return"));
+    lcd_lib_draw_string_centerP(20, PSTR("Teplota trysky:"));
+    lcd_lib_draw_string_centerP(53, PSTR("Zmacknete pro navrat"));
     char buffer[16];
     int_to_string(int(dsp_temperature[active_extruder]), buffer, PSTR("C/"));
     int_to_string(int(target_temperature[active_extruder]), buffer+strlen(buffer), PSTR("C"));
@@ -258,9 +258,9 @@ void lcd_menu_maintenance_extrude()
     }
 
     lcd_lib_clear();
-    lcd_lib_draw_string_centerP(20, PSTR("Nozzle temperature:"));
-    lcd_lib_draw_string_centerP(40, PSTR("Rotate to extrude"));
-    lcd_lib_draw_string_centerP(53, PSTR("Click to return"));
+    lcd_lib_draw_string_centerP(20, PSTR("Teplota trysky:"));
+    lcd_lib_draw_string_centerP(40, PSTR("Otacenim extrudujte"));
+    lcd_lib_draw_string_centerP(53, PSTR("Zmacknete pro navrat"));
     char buffer[16];
     int_to_string(int(dsp_temperature[active_extruder]), buffer, PSTR("C/"));
     int_to_string(int(target_temperature[active_extruder]), buffer+strlen(buffer), PSTR("C"));
@@ -296,7 +296,7 @@ void lcd_menu_maintenance_advanced_bed_heatup()
 
 void lcd_menu_advanced_version()
 {
-    lcd_info_screen(previousMenu, NULL, PSTR("Return"));
+    lcd_info_screen(previousMenu, NULL, PSTR("Zpet"));
     lcd_lib_draw_string_centerP(30, PSTR(STRING_VERSION_CONFIG_H));
     lcd_lib_draw_string_centerP(40, PSTR(STRING_CONFIG_H_AUTHOR));
     lcd_lib_update_screen();
@@ -304,8 +304,8 @@ void lcd_menu_advanced_version()
 
 void lcd_menu_advanced_stats()
 {
-    lcd_info_screen(previousMenu, NULL, PSTR("Return"));
-    lcd_lib_draw_string_centerP(10, PSTR("Machine on for:"));
+    lcd_info_screen(previousMenu, NULL, PSTR("Zpet"));
+    lcd_lib_draw_string_centerP(10, PSTR("Tiskarna zapnuta:"));
     char buffer[16];
     char* c = int_to_string(lifetime_minutes / 60, buffer, PSTR(":"));
     if (lifetime_minutes % 60 < 10)
@@ -313,7 +313,7 @@ void lcd_menu_advanced_stats()
     c = int_to_string(lifetime_minutes % 60, c);
     lcd_lib_draw_string_center(20, buffer);
 
-    lcd_lib_draw_string_centerP(30, PSTR("Printing:"));
+    lcd_lib_draw_string_centerP(30, PSTR("Doba tisku:"));
     c = int_to_string(lifetime_print_minutes / 60, buffer, PSTR(":"));
     if (lifetime_print_minutes % 60 < 10)
         *c++ = '0';
@@ -352,10 +352,10 @@ static void doFactoryReset()
 
 static void lcd_menu_advanced_factory_reset()
 {
-    lcd_question_screen(NULL, doFactoryReset, PSTR("YES"), previousMenu, NULL, PSTR("NO"));
+    lcd_question_screen(NULL, doFactoryReset, PSTR("ANO"), previousMenu, NULL, PSTR("NE"));
 
-    lcd_lib_draw_string_centerP(10, PSTR("Reset everything"));
-    lcd_lib_draw_string_centerP(20, PSTR("to default?"));
+    lcd_lib_draw_string_centerP(10, PSTR("Opravdu chcete"));
+    lcd_lib_draw_string_centerP(20, PSTR("vse resetovat?"));
     lcd_lib_update_screen();
 }
 
@@ -363,11 +363,11 @@ static void lcd_menu_advanced_factory_reset()
 static char* lcd_retraction_item(uint8_t nr)
 {
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr == 1)
-        strcpy_P(card.longFilename, PSTR("Retract length"));
+        strcpy_P(card.longFilename, PSTR("Delka retrakce"));
     else if (nr == 2)
-        strcpy_P(card.longFilename, PSTR("Retract speed"));
+        strcpy_P(card.longFilename, PSTR("Rychlost retrakce"));
     else
         strcpy_P(card.longFilename, PSTR("???"));
     return card.longFilename;
@@ -381,13 +381,13 @@ static void lcd_retraction_details(uint8_t nr)
     else if(nr == 1)
         float_to_string(retract_length, buffer, PSTR("mm"));
     else if(nr == 2)
-        int_to_string(retract_feedrate / 60 + 0.5, buffer, PSTR("mm/sec"));
+        int_to_string(retract_feedrate / 60 + 0.5, buffer, PSTR("mm/s"));
     lcd_lib_draw_string(5, 53, buffer);
 }
 
 static void lcd_menu_maintenance_retraction()
 {
-    lcd_scroll_menu(PSTR("RETRACTION"), 3, lcd_retraction_item, lcd_retraction_details);
+    lcd_scroll_menu(PSTR("RETRAKCE"), 3, lcd_retraction_item, lcd_retraction_details);
     if (lcd_lib_button_pressed)
     {
         if (IS_SELECTED_SCROLL(0))
@@ -396,32 +396,32 @@ static void lcd_menu_maintenance_retraction()
             lcd_change_to_menu(lcd_menu_maintenance_advanced, SCROLL_MENU_ITEM_POS(6 + EXTRUDERS * 2));
         }
         else if (IS_SELECTED_SCROLL(1))
-            LCD_EDIT_SETTING_FLOAT001(retract_length, "Retract length", "mm", 0, 50);
+            LCD_EDIT_SETTING_FLOAT001(retract_length, "Delka retrakce", "mm", 0, 50);
         else if (IS_SELECTED_SCROLL(2))
-            LCD_EDIT_SETTING_SPEED(retract_feedrate, "Retract speed", "mm/sec", 0, max_feedrate[E_AXIS] * 60);
+            LCD_EDIT_SETTING_SPEED(retract_feedrate, "Rychlost retrakce", "mm/s", 0, max_feedrate[E_AXIS] * 60);
     }
 }
 
 static char* lcd_motion_item(uint8_t nr)
 {
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr == 1)
-        strcpy_P(card.longFilename, PSTR("Acceleration"));
+        strcpy_P(card.longFilename, PSTR("Akcelerace"));
     else if (nr == 2)
         strcpy_P(card.longFilename, PSTR("X/Y Jerk"));
     else if (nr == 3)
-        strcpy_P(card.longFilename, PSTR("Max speed X"));
+        strcpy_P(card.longFilename, PSTR("Max rychlost X"));
     else if (nr == 4)
-        strcpy_P(card.longFilename, PSTR("Max speed Y"));
+        strcpy_P(card.longFilename, PSTR("Max rychlost Y"));
     else if (nr == 5)
-        strcpy_P(card.longFilename, PSTR("Max speed Z"));
+        strcpy_P(card.longFilename, PSTR("Max rychlost Z"));
     else if (nr == 6)
-        strcpy_P(card.longFilename, PSTR("Current X/Y"));
+        strcpy_P(card.longFilename, PSTR("Proud motory X/Y"));
     else if (nr == 7)
-        strcpy_P(card.longFilename, PSTR("Current Z"));
+        strcpy_P(card.longFilename, PSTR("Proud motorem Z"));
     else if (nr == 8)
-        strcpy_P(card.longFilename, PSTR("Current E"));
+        strcpy_P(card.longFilename, PSTR("Proud motorem E"));
     else
         strcpy_P(card.longFilename, PSTR("???"));
     return card.longFilename;
@@ -433,15 +433,15 @@ static void lcd_motion_details(uint8_t nr)
     if (nr == 0)
         return;
     else if(nr == 1)
-        int_to_string(acceleration, buffer, PSTR("mm/sec^2"));
+        int_to_string(acceleration, buffer, PSTR("mm/s^2"));
     else if(nr == 2)
-        int_to_string(max_xy_jerk, buffer, PSTR("mm/sec"));
+        int_to_string(max_xy_jerk, buffer, PSTR("mm/s"));
     else if(nr == 3)
-        int_to_string(max_feedrate[X_AXIS], buffer, PSTR("mm/sec"));
+        int_to_string(max_feedrate[X_AXIS], buffer, PSTR("mm/s"));
     else if(nr == 4)
-        int_to_string(max_feedrate[Y_AXIS], buffer, PSTR("mm/sec"));
+        int_to_string(max_feedrate[Y_AXIS], buffer, PSTR("mm/s"));
     else if(nr == 5)
-        int_to_string(max_feedrate[Z_AXIS], buffer, PSTR("mm/sec"));
+        int_to_string(max_feedrate[Z_AXIS], buffer, PSTR("mm/s"));
     else if(nr == 6)
         int_to_string(motor_current_setting[0], buffer, PSTR("mA"));
     else if(nr == 7)
@@ -453,7 +453,7 @@ static void lcd_motion_details(uint8_t nr)
 
 static void lcd_menu_maintenance_motion()
 {
-    lcd_scroll_menu(PSTR("MOTION"), 9, lcd_motion_item, lcd_motion_details);
+    lcd_scroll_menu(PSTR("MOTORY"), 9, lcd_motion_item, lcd_motion_details);
     if (lcd_lib_button_pressed)
     {
         if (IS_SELECTED_SCROLL(0))
@@ -465,38 +465,38 @@ static void lcd_menu_maintenance_motion()
             lcd_change_to_menu(lcd_menu_maintenance_advanced, SCROLL_MENU_ITEM_POS(7));
         }
         else if (IS_SELECTED_SCROLL(1))
-            LCD_EDIT_SETTING_FLOAT100(acceleration, "Acceleration", "mm/sec^2", 0, 20000);
+            LCD_EDIT_SETTING_FLOAT100(acceleration, "Akcelerace", "mm/s^2", 0, 20000);
         else if (IS_SELECTED_SCROLL(2))
-            LCD_EDIT_SETTING_FLOAT1(max_xy_jerk, "X/Y Jerk", "mm/sec", 0, 100);
+            LCD_EDIT_SETTING_FLOAT1(max_xy_jerk, "X/Y Jerk", "mm/s", 0, 100);
         else if (IS_SELECTED_SCROLL(3))
-            LCD_EDIT_SETTING_FLOAT1(max_feedrate[X_AXIS], "Max speed X", "mm/sec", 0, 1000);
+            LCD_EDIT_SETTING_FLOAT1(max_feedrate[X_AXIS], "Max rychlost X", "mm/s", 0, 1000);
         else if (IS_SELECTED_SCROLL(4))
-            LCD_EDIT_SETTING_FLOAT1(max_feedrate[Y_AXIS], "Max speed Y", "mm/sec", 0, 1000);
+            LCD_EDIT_SETTING_FLOAT1(max_feedrate[Y_AXIS], "Max rychlost Y", "mm/s", 0, 1000);
         else if (IS_SELECTED_SCROLL(5))
-            LCD_EDIT_SETTING_FLOAT1(max_feedrate[Z_AXIS], "Max speed Z", "mm/sec", 0, 1000);
+            LCD_EDIT_SETTING_FLOAT1(max_feedrate[Z_AXIS], "Max rychlost Z", "mm/s", 0, 1000);
         else if (IS_SELECTED_SCROLL(6))
-            LCD_EDIT_SETTING(motor_current_setting[0], "Current X/Y", "mA", 0, 1300);
+            LCD_EDIT_SETTING(motor_current_setting[0], "Proud motorem X/Y", "mA", 0, 1300);
         else if (IS_SELECTED_SCROLL(7))
-            LCD_EDIT_SETTING(motor_current_setting[1], "Current Z", "mA", 0, 1300);
+            LCD_EDIT_SETTING(motor_current_setting[1], "Proud motorem Z", "mA", 0, 1300);
         else if (IS_SELECTED_SCROLL(8))
-            LCD_EDIT_SETTING(motor_current_setting[2], "Current E", "mA", 0, 1300);
+            LCD_EDIT_SETTING(motor_current_setting[2], "Proud motorem E", "mA", 0, 1300);
     }
 }
 
 static char* lcd_led_item(uint8_t nr)
 {
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr == 1)
-        strcpy_P(card.longFilename, PSTR("Brightness"));
+        strcpy_P(card.longFilename, PSTR("Jas"));
     else if (nr == 2)
-        strcpy_P(card.longFilename, PSTR(" Always On"));
+        strcpy_P(card.longFilename, PSTR(" Vzdy zapnuty"));
     else if (nr == 3)
-        strcpy_P(card.longFilename, PSTR(" Always Off"));
+        strcpy_P(card.longFilename, PSTR(" Vzdy vypnuty"));
     else if (nr == 4)
-        strcpy_P(card.longFilename, PSTR(" On while printing"));
+        strcpy_P(card.longFilename, PSTR(" Zapnout pri tisku"));
     else if (nr == 5)
-        strcpy_P(card.longFilename, PSTR(" Glow when done"));
+        strcpy_P(card.longFilename, PSTR(" Zapnout po vytisteni"));
     else
         strcpy_P(card.longFilename, PSTR("???"));
     if (nr - 2 == led_mode)
@@ -531,7 +531,7 @@ static void lcd_menu_maintenance_led()
         }
         else if (IS_SELECTED_SCROLL(1))
         {
-            LCD_EDIT_SETTING(led_brightness_level, "Brightness", "%", 0, 100);
+            LCD_EDIT_SETTING(led_brightness_level, "Jas", "%", 0, 100);
         }
         else if (IS_SELECTED_SCROLL(2))
         {
