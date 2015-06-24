@@ -56,7 +56,7 @@ static char* lcd_advanced_item(uint8_t nr)
 #endif
 #if TEMP_SENSOR_BED != 0
     else if (nr == 2 + EXTRUDERS)
-        strcpy_P(card.longFilename, PSTR("Heatup buildplate"));
+        strcpy_P(card.longFilename, PSTR("Zahrat tisk. podlozku"));
 #endif
     else if (nr == 2 + BED_MENU_OFFSET + EXTRUDERS)
         strcpy_P(card.longFilename, PSTR("Zaparkovat hlavu"));
@@ -284,8 +284,8 @@ void lcd_menu_maintenance_advanced_bed_heatup()
         lcd_change_to_menu(previousMenu, previousEncoderPos);
 
     lcd_lib_clear();
-    lcd_lib_draw_string_centerP(20, PSTR("Buildplate temp.:"));
-    lcd_lib_draw_string_centerP(53, PSTR("Click to return"));
+    lcd_lib_draw_string_centerP(20, PSTR("Teplota podlozky:"));
+    lcd_lib_draw_string_centerP(53, PSTR("Zmacknete pro navrat"));
     char buffer[16];
     int_to_string(int(dsp_temperature_bed), buffer, PSTR("C/"));
     int_to_string(int(target_temperature_bed), buffer+strlen(buffer), PSTR("C"));

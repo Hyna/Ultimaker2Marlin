@@ -100,7 +100,7 @@ void lcd_info_screen(menuFunc_t cancelMenu, menuFunc_t callbackOnCancel, const c
 
     lcd_basic_screen();
 
-    if (!cancelButtonText) cancelButtonText = PSTR("CANCEL");
+    if (!cancelButtonText) cancelButtonText = PSTR("ZRUSIT");
     if (IS_SELECTED_MAIN(0))
     {
         lcd_lib_draw_box(3+2, 49+2, 125-2, 63-2);

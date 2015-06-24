@@ -226,8 +226,8 @@ static void lcd_menu_insert_material_preheat()
         minProgress = progress;
 
     lcd_info_screen(post_change_material_menu, cancelMaterialInsert);
-    lcd_lib_draw_stringP(3, 10, PSTR("Heating printhead for"));
-    lcd_lib_draw_stringP(3, 20, PSTR("material insertion"));
+    lcd_lib_draw_stringP(3, 10, PSTR("Zahrivam trysku kvuli"));
+    lcd_lib_draw_stringP(3, 20, PSTR("zavedeni materialu"));
 
     lcd_progressbar(progress);
 
@@ -643,7 +643,7 @@ static char* lcd_material_settings_callback(uint8_t nr)
         strcpy_P(card.longFilename, PSTR("Teplota"));
 #if TEMP_SENSOR_BED != 0
     else if (nr == 2)
-        strcpy_P(card.longFilename, PSTR("Heated buildplate"));
+        strcpy_P(card.longFilename, PSTR("Tiskova podlozka"));
 #endif
     else if (nr == 2 + BED_MENU_OFFSET)
         strcpy_P(card.longFilename, PSTR("Prumer"));
