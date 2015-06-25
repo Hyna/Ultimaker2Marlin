@@ -191,7 +191,7 @@ static void lcd_menu_change_material_remove_wait_user()
 {
     LED_GLOW();
 
-    lcd_question_screen(NULL, lcd_menu_change_material_remove_wait_user_ready, PSTR("READY"), post_change_material_menu, cancelMaterialInsert, PSTR("CANCEL"));
+    lcd_question_screen(NULL, lcd_menu_change_material_remove_wait_user_ready, PSTR("HOTOVO"), post_change_material_menu, cancelMaterialInsert, PSTR("CANCEL"));
     lcd_lib_draw_string_centerP(20, PSTR("Odstrante puvodni"));
     lcd_lib_draw_string_centerP(30, PSTR("material"));
     lcd_lib_update_screen();
