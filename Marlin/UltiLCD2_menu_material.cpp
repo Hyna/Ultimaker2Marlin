@@ -580,7 +580,7 @@ static void lcd_material_select_details_callback(uint8_t nr)
             c = int_to_string(eeprom_read_word(EEPROM_MATERIAL_BED_TEMPERATURE_OFFSET(nr)), c, PSTR("C"));
 #endif
             while(c < buffer + 10) *c++ = ' ';
-            strcpy_P(c, PSTR("Vetrak: "));
+            strcpy_P(c, PSTR("Vet.: "));
             c += 5;
             c = int_to_string(eeprom_read_byte(EEPROM_MATERIAL_FAN_SPEED_OFFSET(nr)), c, PSTR("%"));
         }
