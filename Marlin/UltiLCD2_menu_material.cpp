@@ -369,7 +369,7 @@ static void lcd_menu_material_export_done()
     lcd_lib_encoder_pos = MAIN_MENU_ITEM_POS(0);
     lcd_info_screen(lcd_menu_material_select, NULL, PSTR("Ok"));
     lcd_lib_draw_string_centerP(20, PSTR("Materialy ulozeny"));
-    lcd_lib_draw_string_centerP(30, PSTR("na SD katru jako"));
+    lcd_lib_draw_string_centerP(30, PSTR("na SD kartu jako"));
     lcd_lib_draw_string_centerP(40, PSTR("MATERIAL.TXT"));
     lcd_lib_update_screen();
 }
@@ -545,7 +545,7 @@ static char* lcd_material_select_callback(uint8_t nr)
     else if (nr == count + 2)
         strcpy_P(card.longFilename, PSTR("Export na SD kartu"));
     else if (nr == count + 3)
-        strcpy_P(card.longFilename, PSTR("Import z SD katry"));
+        strcpy_P(card.longFilename, PSTR("Import z SD karty"));
     else{
         eeprom_read_block(card.longFilename, EEPROM_MATERIAL_NAME_OFFSET(nr - 1), 8);
         card.longFilename[8] = '\0';
