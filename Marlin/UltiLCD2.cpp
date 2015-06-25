@@ -66,15 +66,15 @@ void lcd_update()
     if (IsStopped())
     {
         lcd_lib_clear();
-        lcd_lib_draw_string_centerP(10, PSTR("ERROR - STOPPED"));
+        lcd_lib_draw_string_centerP(10, PSTR("CHYBA - STOPPED"));
         switch(StoppedReason())
         {
         case STOP_REASON_MAXTEMP:
         case STOP_REASON_MINTEMP:
-            lcd_lib_draw_string_centerP(20, PSTR("Temp sensor"));
+            lcd_lib_draw_string_centerP(20, PSTR("Teplotni senzor"));
             break;
         case STOP_REASON_MAXTEMP_BED:
-            lcd_lib_draw_string_centerP(20, PSTR("Temp sensor BED"));
+            lcd_lib_draw_string_centerP(20, PSTR("Teplotni senzor BED"));
             break;
         case STOP_REASON_HEATER_ERROR:
             lcd_lib_draw_string_centerP(20, PSTR("Heater error"));
@@ -95,7 +95,7 @@ void lcd_update()
             lcd_lib_draw_string_centerP(20, PSTR("X or Y switch stuck"));
             break;
         }
-        lcd_lib_draw_stringP(1, 40, PSTR("Contact:"));
+        lcd_lib_draw_stringP(1, 40, PSTR("Kontakt:"));
         lcd_lib_draw_stringP(1, 50, PSTR("support@ultimaker.com"));
         LED_GLOW_ERROR();
         lcd_lib_update_screen();
@@ -188,7 +188,7 @@ static void lcd_menu_special_startup()
 
     lcd_lib_clear();
     lcd_lib_draw_gfx(7, 12, specialStartupGfx);
-    lcd_lib_draw_stringP(3, 2, PSTR("Welcome"));
+    lcd_lib_draw_stringP(3, 2, PSTR("Vitejte"));
     lcd_lib_draw_string_centerP(47, PSTR("To the Ultimaker2"));
     lcd_lib_draw_string_centerP(55, PSTR("experience!"));
     lcd_lib_update_screen();
@@ -217,7 +217,7 @@ void doCooldown()
 
 void lcd_menu_main()
 {
-    lcd_tripple_menu(PSTR("PRINT"), PSTR("MATERIAL"), PSTR("MAINTENANCE"));
+    lcd_tripple_menu(PSTR("TISK"), PSTR("MATERIAL"), PSTR("UDRZBA"));
 
     if (lcd_lib_button_pressed)
     {

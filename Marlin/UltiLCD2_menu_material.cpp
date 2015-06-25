@@ -86,7 +86,7 @@ static void lcd_menu_material_main_return()
 
 static void lcd_menu_material_main()
 {
-    lcd_tripple_menu(PSTR("CHANGE"), PSTR("SETTINGS"), PSTR("RETURN"));
+    lcd_tripple_menu(PSTR("VYMENA|MATERIALU"), PSTR("NASTAVENI"), PSTR("ZPET"));
 
     if (lcd_lib_button_pressed)
     {
@@ -148,8 +148,8 @@ static void lcd_menu_change_material_preheat()
         minProgress = progress;
 
     lcd_info_screen(post_change_material_menu, cancelMaterialInsert);
-    lcd_lib_draw_stringP(3, 10, PSTR("Heating printhead"));
-    lcd_lib_draw_stringP(3, 20, PSTR("for material removal"));
+    lcd_lib_draw_stringP(3, 10, PSTR("Zahrivam trysku kvuli"));
+    lcd_lib_draw_stringP(3, 20, PSTR("vymene materialu"));
 
     lcd_progressbar(progress);
 
@@ -159,7 +159,7 @@ static void lcd_menu_change_material_preheat()
 static void lcd_menu_change_material_remove()
 {
     lcd_info_screen(post_change_material_menu, cancelMaterialInsert);
-    lcd_lib_draw_stringP(3, 20, PSTR("Reversing material"));
+    lcd_lib_draw_stringP(3, 20, PSTR("Vyjizdim s materialem"));
 
     if (!blocks_queued())
     {
@@ -192,7 +192,8 @@ static void lcd_menu_change_material_remove_wait_user()
     LED_GLOW();
 
     lcd_question_screen(NULL, lcd_menu_change_material_remove_wait_user_ready, PSTR("READY"), post_change_material_menu, cancelMaterialInsert, PSTR("CANCEL"));
-    lcd_lib_draw_string_centerP(20, PSTR("Remove material"));
+    lcd_lib_draw_string_centerP(20, PSTR("Odstrante puvodni"));
+    lcd_lib_draw_string_centerP(30, PSTR("material"));
     lcd_lib_update_screen();
 }
 
@@ -225,8 +226,8 @@ static void lcd_menu_insert_material_preheat()
         minProgress = progress;
 
     lcd_info_screen(post_change_material_menu, cancelMaterialInsert);
-    lcd_lib_draw_stringP(3, 10, PSTR("Heating printhead for"));
-    lcd_lib_draw_stringP(3, 20, PSTR("material insertion"));
+    lcd_lib_draw_stringP(3, 10, PSTR("Zahrivam trysku kvuli"));
+    lcd_lib_draw_stringP(3, 20, PSTR("zavedeni materialu"));
 
     lcd_progressbar(progress);
 
@@ -243,11 +244,11 @@ static void lcd_menu_change_material_insert_wait_user()
         plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], 0.5 / volume_to_filament_length[active_extruder], FILAMENT_INSERT_SPEED, active_extruder);
     }
 
-    lcd_question_screen(NULL, lcd_menu_change_material_insert_wait_user_ready, PSTR("READY"), post_change_material_menu, cancelMaterialInsert, PSTR("CANCEL"));
-    lcd_lib_draw_string_centerP(10, PSTR("Insert new material"));
-    lcd_lib_draw_string_centerP(20, PSTR("from the backside of"));
-    lcd_lib_draw_string_centerP(30, PSTR("your machine,"));
-    lcd_lib_draw_string_centerP(40, PSTR("above the arrow."));
+    lcd_question_screen(NULL, lcd_menu_change_material_insert_wait_user_ready, PSTR("HOTOVO"), post_change_material_menu, cancelMaterialInsert, PSTR("ZRUSIT"));
+    lcd_lib_draw_string_centerP(10, PSTR("Vlozte novy material"));
+    lcd_lib_draw_string_centerP(20, PSTR("ze zadni strany"));
+    lcd_lib_draw_string_centerP(30, PSTR("tiskarny,"));
+    lcd_lib_draw_string_centerP(40, PSTR("ve smeru sipky."));
     lcd_lib_update_screen();
 }
 
@@ -272,7 +273,7 @@ static void lcd_menu_change_material_insert_wait_user_ready()
 static void lcd_menu_change_material_insert_forward()
 {
     lcd_info_screen(post_change_material_menu, cancelMaterialInsert);
-    lcd_lib_draw_stringP(3, 20, PSTR("Forwarding material"));
+    lcd_lib_draw_stringP(3, 20, PSTR("Zavadim material"));
 
     if (!blocks_queued())
     {
@@ -303,9 +304,10 @@ static void lcd_menu_change_material_insert()
 {
     LED_GLOW();
 
-    lcd_question_screen(lcd_menu_change_material_select_material, materialInsertReady, PSTR("READY"), post_change_material_menu, cancelMaterialInsert, PSTR("CANCEL"));
-    lcd_lib_draw_string_centerP(20, PSTR("Wait till material"));
-    lcd_lib_draw_string_centerP(30, PSTR("comes out the nozzle"));
+    lcd_question_screen(lcd_menu_change_material_select_material, materialInsertReady, PSTR("HOTOVO"), post_change_material_menu, cancelMaterialInsert, PSTR("ZRUSIT"));
+    lcd_lib_draw_string_centerP(10, PSTR("Cekejte dokud nezacne"));
+    lcd_lib_draw_string_centerP(20, PSTR("material vychazet"));
+    lcd_lib_draw_string_centerP(30, PSTR("z trysky."));
 
     if (movesplanned() < 2)
     {
@@ -332,7 +334,7 @@ static void lcd_menu_change_material_select_material_details_callback(uint8_t nr
     {
         c = float_to_string(eeprom_read_float(EEPROM_MATERIAL_DIAMETER_OFFSET(nr)), c, PSTR("mm"));
         while(c < buffer + 10) *c++ = ' ';
-        strcpy_P(c, PSTR("Flow:"));
+        strcpy_P(c, PSTR("Tok:"));
         c += 5;
         c = int_to_string(eeprom_read_word(EEPROM_MATERIAL_FLOW_OFFSET(nr)), c, PSTR("%"));
     }else{
@@ -342,7 +344,7 @@ static void lcd_menu_change_material_select_material_details_callback(uint8_t nr
         c = int_to_string(eeprom_read_word(EEPROM_MATERIAL_BED_TEMPERATURE_OFFSET(nr)), c, PSTR("C"));
 #endif
         while(c < buffer + 10) *c++ = ' ';
-        strcpy_P(c, PSTR("Fan: "));
+        strcpy_P(c, PSTR("Vet.:"));
         c += 5;
         c = int_to_string(eeprom_read_byte(EEPROM_MATERIAL_FAN_SPEED_OFFSET(nr)), c, PSTR("%"));
     }
@@ -366,9 +368,9 @@ static void lcd_menu_material_export_done()
 {
     lcd_lib_encoder_pos = MAIN_MENU_ITEM_POS(0);
     lcd_info_screen(lcd_menu_material_select, NULL, PSTR("Ok"));
-    lcd_lib_draw_string_centerP(20, PSTR("Saved materials"));
-    lcd_lib_draw_string_centerP(30, PSTR("to the SD card"));
-    lcd_lib_draw_string_centerP(40, PSTR("in MATERIAL.TXT"));
+    lcd_lib_draw_string_centerP(20, PSTR("Materialy ulozeny"));
+    lcd_lib_draw_string_centerP(30, PSTR("na SD kartu jako"));
+    lcd_lib_draw_string_centerP(40, PSTR("MATERIAL.TXT"));
     lcd_lib_update_screen();
 }
 
@@ -379,8 +381,8 @@ static void lcd_menu_material_export()
         LED_GLOW();
         lcd_lib_encoder_pos = MAIN_MENU_ITEM_POS(0);
         lcd_info_screen(lcd_menu_material_select);
-        lcd_lib_draw_string_centerP(15, PSTR("No SD-CARD!"));
-        lcd_lib_draw_string_centerP(25, PSTR("Please insert card"));
+        lcd_lib_draw_string_centerP(15, PSTR("Zadna SD-KARTA!"));
+        lcd_lib_draw_string_centerP(25, PSTR("Prosim vlozte kartu"));
         lcd_lib_update_screen();
         card.release();
         return;
@@ -388,7 +390,7 @@ static void lcd_menu_material_export()
     if (!card.isOk())
     {
         lcd_info_screen(lcd_menu_material_select);
-        lcd_lib_draw_string_centerP(16, PSTR("Reading card..."));
+        lcd_lib_draw_string_centerP(16, PSTR("Nacitam kartu..."));
         lcd_lib_update_screen();
         card.initsd();
         return;
@@ -446,8 +448,8 @@ static void lcd_menu_material_import_done()
 {
     lcd_lib_encoder_pos = MAIN_MENU_ITEM_POS(0);
     lcd_info_screen(lcd_menu_material_select, NULL, PSTR("Ok"));
-    lcd_lib_draw_string_centerP(20, PSTR("Loaded materials"));
-    lcd_lib_draw_string_centerP(30, PSTR("from the SD card"));
+    lcd_lib_draw_string_centerP(20, PSTR("Materialy nacteny"));
+    lcd_lib_draw_string_centerP(30, PSTR("z SD karty"));
     lcd_lib_update_screen();
 }
 
@@ -458,8 +460,8 @@ static void lcd_menu_material_import()
         LED_GLOW();
         lcd_lib_encoder_pos = MAIN_MENU_ITEM_POS(0);
         lcd_info_screen(lcd_menu_material_select);
-        lcd_lib_draw_string_centerP(15, PSTR("No SD-CARD!"));
-        lcd_lib_draw_string_centerP(25, PSTR("Please insert card"));
+        lcd_lib_draw_string_centerP(15, PSTR("Zadna SD-KARTA!"));
+        lcd_lib_draw_string_centerP(25, PSTR("Prosim vlozte kartu"));
         lcd_lib_update_screen();
         card.release();
         return;
@@ -467,7 +469,7 @@ static void lcd_menu_material_import()
     if (!card.isOk())
     {
         lcd_info_screen(lcd_menu_material_select);
-        lcd_lib_draw_string_centerP(16, PSTR("Reading card..."));
+        lcd_lib_draw_string_centerP(16, PSTR("Nacitam kartu..."));
         lcd_lib_update_screen();
         card.initsd();
         return;
@@ -478,8 +480,8 @@ static void lcd_menu_material_import()
     if (!card.isFileOpen())
     {
         lcd_info_screen(lcd_menu_material_select);
-        lcd_lib_draw_string_centerP(15, PSTR("No export file"));
-        lcd_lib_draw_string_centerP(25, PSTR("Found on card."));
+        lcd_lib_draw_string_centerP(15, PSTR("Nenalezen zadny"));
+        lcd_lib_draw_string_centerP(25, PSTR("soubor k exportu."));
         lcd_lib_update_screen();
         return;
     }
@@ -537,13 +539,13 @@ static char* lcd_material_select_callback(uint8_t nr)
 {
     uint8_t count = eeprom_read_byte(EEPROM_MATERIAL_COUNT_OFFSET());
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr == count + 1)
-        strcpy_P(card.longFilename, PSTR("Customize"));
+        strcpy_P(card.longFilename, PSTR("Prizpusobit"));
     else if (nr == count + 2)
-        strcpy_P(card.longFilename, PSTR("Export to SD"));
+        strcpy_P(card.longFilename, PSTR("Export na SD kartu"));
     else if (nr == count + 3)
-        strcpy_P(card.longFilename, PSTR("Import from SD"));
+        strcpy_P(card.longFilename, PSTR("Import z SD karty"));
     else{
         eeprom_read_block(card.longFilename, EEPROM_MATERIAL_NAME_OFFSET(nr - 1), 8);
         card.longFilename[8] = '\0';
@@ -568,7 +570,7 @@ static void lcd_material_select_details_callback(uint8_t nr)
         {
             c = float_to_string(eeprom_read_float(EEPROM_MATERIAL_DIAMETER_OFFSET(nr)), c, PSTR("mm"));
             while(c < buffer + 10) *c++ = ' ';
-            strcpy_P(c, PSTR("Flow:"));
+            strcpy_P(c, PSTR("Tok:"));
             c += 5;
             c = int_to_string(eeprom_read_word(EEPROM_MATERIAL_FLOW_OFFSET(nr)), c, PSTR("%"));
         }else{
@@ -578,20 +580,20 @@ static void lcd_material_select_details_callback(uint8_t nr)
             c = int_to_string(eeprom_read_word(EEPROM_MATERIAL_BED_TEMPERATURE_OFFSET(nr)), c, PSTR("C"));
 #endif
             while(c < buffer + 10) *c++ = ' ';
-            strcpy_P(c, PSTR("Fan: "));
+            strcpy_P(c, PSTR("Vet.: "));
             c += 5;
             c = int_to_string(eeprom_read_byte(EEPROM_MATERIAL_FAN_SPEED_OFFSET(nr)), c, PSTR("%"));
         }
         lcd_lib_draw_string(5, 53, buffer);
     }else if (nr == count + 1)
     {
-        lcd_lib_draw_string_centerP(53, PSTR("Modify the settings"));
+        lcd_lib_draw_string_centerP(53, PSTR("Upravit nastaveni"));
     }else if (nr == count + 2)
     {
-        lcd_lib_draw_string_centerP(53, PSTR("Saves all materials"));
+        lcd_lib_draw_string_centerP(53, PSTR("Ulozit vsechny mat."));
     }else if (nr == count + 3)
     {
-        lcd_lib_draw_string_centerP(53, PSTR("Loads all materials"));
+        lcd_lib_draw_string_centerP(53, PSTR("Nacist vsechny mat."));
     }
 }
 
@@ -622,7 +624,7 @@ static void lcd_menu_material_select()
 static void lcd_menu_material_selected()
 {
     lcd_info_screen(post_change_material_menu, NULL, PSTR("OK"));
-    lcd_lib_draw_string_centerP(20, PSTR("Selected material:"));
+    lcd_lib_draw_string_centerP(20, PSTR("Zvoleny material:"));
     lcd_lib_draw_string_center(30, card.longFilename);
 #if EXTRUDERS > 1
     if (active_extruder == 0)
@@ -636,21 +638,21 @@ static void lcd_menu_material_selected()
 static char* lcd_material_settings_callback(uint8_t nr)
 {
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr == 1)
-        strcpy_P(card.longFilename, PSTR("Temperature"));
+        strcpy_P(card.longFilename, PSTR("Teplota"));
 #if TEMP_SENSOR_BED != 0
     else if (nr == 2)
-        strcpy_P(card.longFilename, PSTR("Heated buildplate"));
+        strcpy_P(card.longFilename, PSTR("Tiskova podlozka"));
 #endif
     else if (nr == 2 + BED_MENU_OFFSET)
-        strcpy_P(card.longFilename, PSTR("Diameter"));
+        strcpy_P(card.longFilename, PSTR("Prumer"));
     else if (nr == 3 + BED_MENU_OFFSET)
-        strcpy_P(card.longFilename, PSTR("Fan"));
+        strcpy_P(card.longFilename, PSTR("Vetrak"));
     else if (nr == 4 + BED_MENU_OFFSET)
-        strcpy_P(card.longFilename, PSTR("Flow %"));
+        strcpy_P(card.longFilename, PSTR("Tok %"));
     else if (nr == 5 + BED_MENU_OFFSET)
-        strcpy_P(card.longFilename, PSTR("Store as preset"));
+        strcpy_P(card.longFilename, PSTR("Ulozit jako"));
     else
         strcpy_P(card.longFilename, PSTR("???"));
     return card.longFilename;
@@ -694,17 +696,17 @@ static void lcd_menu_material_settings()
             lcd_change_to_menu(lcd_menu_material_main);
             lcd_material_store_current_material();
         }else if (IS_SELECTED_SCROLL(1))
-            LCD_EDIT_SETTING(material[active_extruder].temperature, "Temperature", "C", 0, HEATER_0_MAXTEMP - 15);
+            LCD_EDIT_SETTING(material[active_extruder].temperature, "Teplota", "C", 0, HEATER_0_MAXTEMP - 15);
 #if TEMP_SENSOR_BED != 0
         else if (IS_SELECTED_SCROLL(2))
             LCD_EDIT_SETTING(material[active_extruder].bed_temperature, "Buildplate Temp.", "C", 0, BED_MAXTEMP - 15);
 #endif
         else if (IS_SELECTED_SCROLL(2 + BED_MENU_OFFSET))
-            LCD_EDIT_SETTING_FLOAT001(material[active_extruder].diameter, "Material Diameter", "mm", 0, 100);
+            LCD_EDIT_SETTING_FLOAT001(material[active_extruder].diameter, "Prumer materialu", "mm", 0, 100);
         else if (IS_SELECTED_SCROLL(3 + BED_MENU_OFFSET))
-            LCD_EDIT_SETTING(material[active_extruder].fan_speed, "Fan speed", "%", 0, 100);
+            LCD_EDIT_SETTING(material[active_extruder].fan_speed, "Rychlost vetraku", "%", 0, 100);
         else if (IS_SELECTED_SCROLL(4 + BED_MENU_OFFSET))
-            LCD_EDIT_SETTING(material[active_extruder].flow, "Material flow", "%", 1, 1000);
+            LCD_EDIT_SETTING(material[active_extruder].flow, "Tok materialu", "%", 1, 1000);
         else if (IS_SELECTED_SCROLL(5 + BED_MENU_OFFSET))
             lcd_change_to_menu(lcd_menu_material_settings_store);
     }
@@ -714,9 +716,9 @@ static char* lcd_menu_material_settings_store_callback(uint8_t nr)
 {
     uint8_t count = eeprom_read_byte(EEPROM_MATERIAL_COUNT_OFFSET());
     if (nr == 0)
-        strcpy_P(card.longFilename, PSTR("< RETURN"));
+        strcpy_P(card.longFilename, PSTR("< ZPET"));
     else if (nr > count)
-        strcpy_P(card.longFilename, PSTR("New preset"));
+        strcpy_P(card.longFilename, PSTR("Vytvorit novy"));
     else{
         eeprom_read_block(card.longFilename, EEPROM_MATERIAL_NAME_OFFSET(nr - 1), 8);
         card.longFilename[8] = '\0';
