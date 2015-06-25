@@ -72,11 +72,11 @@ static void homeAndParkHeadForCenterAdjustment2()
 //Started bed leveling from the calibration menu
 void lcd_menu_first_run_start_bed_leveling()
 {
-    lcd_question_screen(lcd_menu_first_run_bed_level_center_adjust, homeAndParkHeadForCenterAdjustment2, PSTR("CONTINUE"), lcd_menu_main, NULL, PSTR("CANCEL"));
-    lcd_lib_draw_string_centerP(10, PSTR("I will guide you"));
-    lcd_lib_draw_string_centerP(20, PSTR("through the process"));
-    lcd_lib_draw_string_centerP(30, PSTR("of adjusting your"));
-    lcd_lib_draw_string_centerP(40, PSTR("buildplate."));
+    lcd_question_screen(lcd_menu_first_run_bed_level_center_adjust, homeAndParkHeadForCenterAdjustment2, PSTR("POKRACOVAT"), lcd_menu_main, NULL, PSTR("ZRUSIT"));
+    lcd_lib_draw_string_centerP(10, PSTR("Tento pruvodce vas"));
+    lcd_lib_draw_string_centerP(20, PSTR("povedek krok za"));
+    lcd_lib_draw_string_centerP(30, PSTR("krokem pri kalibraci"));
+    lcd_lib_draw_string_centerP(40, PSTR("tiskove podlozky."));
     lcd_lib_update_screen();
 }
 
@@ -150,14 +150,14 @@ static void lcd_menu_first_run_bed_level_center_adjust()
     lcd_lib_encoder_pos = 0;
 
     if (movesplanned() > 0)
-        lcd_info_screen(NULL, NULL, PSTR("CONTINUE"));
+        lcd_info_screen(NULL, NULL, PSTR("POKRACOVAT"));
     else
-        lcd_info_screen(lcd_menu_first_run_bed_level_left_adjust, parkHeadForLeftAdjustment, PSTR("CONTINUE"));
+        lcd_info_screen(lcd_menu_first_run_bed_level_left_adjust, parkHeadForLeftAdjustment, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(4);
-    lcd_lib_draw_string_centerP(10, PSTR("Rotate the button"));
-    lcd_lib_draw_string_centerP(20, PSTR("until the nozzle is"));
-    lcd_lib_draw_string_centerP(30, PSTR("a millimeter away"));
-    lcd_lib_draw_string_centerP(40, PSTR("from the buildplate."));
+    lcd_lib_draw_string_centerP(10, PSTR("Otacejte tlacitkem"));
+    lcd_lib_draw_string_centerP(20, PSTR("dokud nebude tryska"));
+    lcd_lib_draw_string_centerP(30, PSTR("priblizne milimetr"));
+    lcd_lib_draw_string_centerP(40, PSTR("od tiskove podlozky."));
     lcd_lib_update_screen();
 }
 
@@ -177,12 +177,12 @@ static void lcd_menu_first_run_bed_level_left_adjust()
     LED_GLOW();
     SELECT_MAIN_MENU_ITEM(0);
 
-    lcd_info_screen(lcd_menu_first_run_bed_level_right_adjust, parkHeadForRightAdjustment, PSTR("CONTINUE"));
+    lcd_info_screen(lcd_menu_first_run_bed_level_right_adjust, parkHeadForRightAdjustment, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(5);
-    lcd_lib_draw_string_centerP(10, PSTR("Turn left buildplate"));
-    lcd_lib_draw_string_centerP(20, PSTR("screw till the nozzle"));
-    lcd_lib_draw_string_centerP(30, PSTR("is a millimeter away"));
-    lcd_lib_draw_string_centerP(40, PSTR("from the buildplate."));
+    lcd_lib_draw_string_centerP(10, PSTR("Otacejte levym pred-"));
+    lcd_lib_draw_string_centerP(20, PSTR("nim sroubem, dokud"));
+    lcd_lib_draw_string_centerP(30, PSTR("nebude tryska asi"));
+    lcd_lib_draw_string_centerP(40, PSTR("milimetr od podlozky"));
 
     lcd_lib_update_screen();
 }
@@ -191,12 +191,12 @@ static void lcd_menu_first_run_bed_level_right_adjust()
 {
     LED_GLOW();
     SELECT_MAIN_MENU_ITEM(0);
-    lcd_info_screen(lcd_menu_first_run_bed_level_paper, NULL, PSTR("CONTINUE"));
+    lcd_info_screen(lcd_menu_first_run_bed_level_paper, NULL, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(6);
-    lcd_lib_draw_string_centerP(10, PSTR("Turn right buildplate"));
-    lcd_lib_draw_string_centerP(20, PSTR("screw till the nozzle"));
-    lcd_lib_draw_string_centerP(30, PSTR("is a millimeter away"));
-    lcd_lib_draw_string_centerP(40, PSTR("from the buildplate."));
+    lcd_lib_draw_string_centerP(10, PSTR("Otacejte pravym pred-"));
+    lcd_lib_draw_string_centerP(20, PSTR("nim sroubem, dokud"));
+    lcd_lib_draw_string_centerP(30, PSTR("nebude tryska asi"));
+    lcd_lib_draw_string_centerP(40, PSTR("milimetr od podlozky"));
 
     lcd_lib_update_screen();
 }
@@ -215,12 +215,12 @@ static void parkHeadForCenterAdjustment()
 static void lcd_menu_first_run_bed_level_paper()
 {
     SELECT_MAIN_MENU_ITEM(0);
-    lcd_info_screen(lcd_menu_first_run_bed_level_paper_center, parkHeadForCenterAdjustment, PSTR("CONTINUE"));
+    lcd_info_screen(lcd_menu_first_run_bed_level_paper_center, parkHeadForCenterAdjustment, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(7);
-    lcd_lib_draw_string_centerP(10, PSTR("Repeat this step, but"));
-    lcd_lib_draw_string_centerP(20, PSTR("now use a sheet of"));
-    lcd_lib_draw_string_centerP(30, PSTR("paper to fine-tune"));
-    lcd_lib_draw_string_centerP(40, PSTR("the buildplate level."));
+    lcd_lib_draw_string_centerP(10, PSTR("Pro presnou kalibraci"));
+    lcd_lib_draw_string_centerP(20, PSTR("zopakujte tyto kroky"));
+    lcd_lib_draw_string_centerP(30, PSTR("za pomoci kousku"));
+    lcd_lib_draw_string_centerP(40, PSTR("papiru."));
     lcd_lib_update_screen();
 }
 
@@ -239,14 +239,14 @@ static void lcd_menu_first_run_bed_level_paper_center()
     }
 
     if (movesplanned() > 0)
-        lcd_info_screen(NULL, NULL, PSTR("CONTINUE"));
+        lcd_info_screen(NULL, NULL, PSTR("POKRACOVAT"));
     else
-        lcd_info_screen(lcd_menu_first_run_bed_level_paper_left, parkHeadForLeftAdjustment, PSTR("CONTINUE"));
+        lcd_info_screen(lcd_menu_first_run_bed_level_paper_left, parkHeadForLeftAdjustment, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(8);
-    lcd_lib_draw_string_centerP(10, PSTR("Slide a paper between"));
-    lcd_lib_draw_string_centerP(20, PSTR("buildplate and nozzle"));
-    lcd_lib_draw_string_centerP(30, PSTR("until you feel a"));
-    lcd_lib_draw_string_centerP(40, PSTR("bit resistance."));
+    lcd_lib_draw_string_centerP(10, PSTR("Zasunte papir mezi"));
+    lcd_lib_draw_string_centerP(20, PSTR("trysku a podlozku,"));
+    lcd_lib_draw_string_centerP(30, PSTR("otacejte dokud"));
+    lcd_lib_draw_string_centerP(40, PSTR("papir neklade odpor"));
     lcd_lib_update_screen();
 }
 
@@ -255,10 +255,10 @@ static void lcd_menu_first_run_bed_level_paper_left()
     LED_GLOW();
 
     SELECT_MAIN_MENU_ITEM(0);
-    lcd_info_screen(lcd_menu_first_run_bed_level_paper_right, parkHeadForRightAdjustment, PSTR("CONTINUE"));
+    lcd_info_screen(lcd_menu_first_run_bed_level_paper_right, parkHeadForRightAdjustment, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(9);
-    lcd_lib_draw_string_centerP(20, PSTR("Repeat this for"));
-    lcd_lib_draw_string_centerP(30, PSTR("the left corner..."));
+    lcd_lib_draw_string_centerP(20, PSTR("Opakujte to stejne"));
+    lcd_lib_draw_string_centerP(30, PSTR("pro levy roh..."));
     lcd_lib_update_screen();
 }
 
@@ -276,12 +276,12 @@ static void lcd_menu_first_run_bed_level_paper_right()
 
     SELECT_MAIN_MENU_ITEM(0);
     if (IS_FIRST_RUN_DONE())
-        lcd_info_screen(lcd_menu_main, homeBed, PSTR("DONE"));
+        lcd_info_screen(lcd_menu_main, homeBed, PSTR("HOTOVO"));
     else
-        lcd_info_screen(lcd_menu_first_run_material_load, homeBed, PSTR("CONTINUE"));
+        lcd_info_screen(lcd_menu_first_run_material_load, homeBed, PSTR("POKRACOVAT"));
     DRAW_PROGRESS_NR_IF_NOT_DONE(10);
-    lcd_lib_draw_string_centerP(20, PSTR("Repeat this for"));
-    lcd_lib_draw_string_centerP(30, PSTR("the right corner..."));
+    lcd_lib_draw_string_centerP(20, PSTR("Opakujte to stejne"));
+    lcd_lib_draw_string_centerP(30, PSTR("pro levy roh..."));
     lcd_lib_update_screen();
 }
 
